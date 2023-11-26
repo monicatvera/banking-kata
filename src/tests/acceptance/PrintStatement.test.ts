@@ -1,24 +1,32 @@
 import { Account } from "../../core/Account";
-import {Console} from "../../core/Console"
+import { Clock } from "../../core/Clock";
+import { Console } from "../../core/Console";
 import { StatementPrinter } from "../../core/StatementPrinter";
 import { TransactionRepository } from "../../core/TransactionRepository";
 
-describe('Print statement', ()=>{
+describe('Print Statement', () => {
     const console = new Console();
+    const statementPrinter = new StatementPrinter(console);
     const consoleSpy = jest.spyOn(console, 'log');
-    const repository = new TransactionRepository();
-    const statementPrinter = new StatementPrinter();
+    const clock = new Clock();
+    clock.getDateAsString = jest
+        .fn()
+        .mockReturnValueOnce('20/04/2023')
+        .mockReturnValueOnce('21/04/2023')
+        .mockReturnValueOnce('22/04/2023');
+    const repository = new TransactionRepository(clock);
     const account = new Account(repository, statementPrinter);
     
-    it('prints an account statement including the transactions made throughout the console', () => {
-        account.deposit(1000);
-        account.withdraw(500);
-        account.deposit(2000);
+    it('prints an account statement including the transaction made throughout the console', () =>{
+        account.deposit(2000.00);
+        account.withdraw(500.00);
+        account.deposit(1000.00);
+        
         account.printStatement();
         
         expect(consoleSpy).toHaveBeenCalledWith('Date | Amount | Balance');
-        expect(consoleSpy).toHaveBeenCalledWith('14/01/2022 | 2000 | 2500');
-        expect(consoleSpy).toHaveBeenCalledWith('13/01/2022 | -500 | 500');
-        expect(consoleSpy).toHaveBeenCalledWith('10/01/2022 | 1000 | 1000');
+        expect(consoleSpy).toHaveBeenCalledWith('20/04/2023 | 2000.00 | 2000.00');
+        expect(consoleSpy).toHaveBeenCalledWith('21/04/2023 | -500.00 | 1500.00');
+        expect(consoleSpy).toHaveBeenCalledWith('22/04/2023 | 1000.00 | 2500.00');
     });
-})
+});
