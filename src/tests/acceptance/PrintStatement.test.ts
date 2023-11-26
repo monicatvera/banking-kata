@@ -1,6 +1,6 @@
 import { Account } from "../../core/Account";
 import {Console} from "../../core/Console"
-import { TransactionRepository } from "../../core/Transaction";
+import { TransactionRepository } from "../../core/TransactionRepository";
 
 describe('Print statement', ()=>{
     const console = new Console();
