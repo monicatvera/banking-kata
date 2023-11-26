@@ -7,8 +7,8 @@ describe('The account', () => {
     const addDepositSpy = jest.spyOn(repository, 'addDeposit');
 
     it('stores a deposit transaction throughout the repository', () => {
-    account.deposit(100);
+        account.deposit(100);
 
-    expect(addDepositSpy).toHaveBeenCalledWith(100);
+        expect(addDepositSpy).toHaveBeenCalledWith(100);
     });
 });
